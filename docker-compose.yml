@@ -1,0 +1,44 @@
+version: '2'
+
+# Default network is an external network created by the user.
+# Projects add vhost containers to this network.
+networks:
+  default:
+    external:
+      name: auto
+
+services:
+
+  # The nginx proxy that autoconfigures itself with vhosts for containers that
+  # have the `VIRTUAL_HOST` environment variable set.
+  # https://hub.docker.com/r/jwilder/nginx-proxy/
+  nginx:
+    image: jwilder/nginx-proxy
+    container_name: auto-nginx
+    # Publish the HTTP port on the host.
+    ports:
+      - '80:80'
+    # Needs the Docker socket to inspect other containers.
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    # Keep running through restarts.
+    restart: always
+
+  # The dnsmasq instance that responds to all requests for the `docker`
+  # top-level domain with `127.0.0.1`, which is the nginx proxy.
+  # https://hub.docker.com/r/andyshinn/dnsmasq/
+  dnsmasq:
+    image: andyshinn/dnsmasq
+    container_name: auto-dnsmasq
+    command:
+      - '--address=/docker/127.0.0.1'
+      - '--server=8.8.8.8'  # Forward to Google DNS.
+    # Dnsmasq needs this capability.
+    cap_add:
+      - NET_ADMIN
+    # Publish the DNS ports on the host.
+    ports:
+      - '53:53'
+      - '53:53/udp'
+    # Keep running through restarts.
+    restart: always
