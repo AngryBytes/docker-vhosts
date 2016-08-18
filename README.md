@@ -42,6 +42,9 @@ address=/docker/127.0.0.1
 server=8.8.8.8
 ```
 
+ - In general, `dnsmasq` can be replaced with any DNS server, as long as
+   there's a wildcard domain `*.docker` that resolves to localhost.
+
  [homebrew]: http://brew.sh/
 
 ## Configuring projects
