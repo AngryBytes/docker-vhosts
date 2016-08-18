@@ -2,7 +2,13 @@
 
 An example setup for creating automatic vhosts in Docker during development.
 
-## Usage
+Builds on [jwilder/nginx-proxy] and [andyshinn/dnsmasq]. See the
+`docker-compose.yml` file, and adjust to your needs.
+
+ [jwilder/nginx-proxy]: https://hub.docker.com/r/jwilder/nginx-proxy/
+ [andyshinn/dnsmasq]: https://hub.docker.com/r/andyshinn/dnsmasq/
+
+## Basic usage
 
  * Install [Docker for Mac], [Docker for Windows] or just plain [Docker] if you
    are already on a Linux host.
@@ -20,6 +26,23 @@ An example setup for creating automatic vhosts in Docker during development.
  [Docker for Mac]: https://docs.docker.com/docker-for-mac/
  [Docker for Windows]: https://docs.docker.com/docker-for-windows/
  [Docker]: https://docs.docker.com/engine/installation/linux/
+
+## Customizing
+
+ - The default DNS settings use Google DNS as the forward DNS server. Edit the
+   `docker-compose.yml` file to adjust it if needed.
+
+ - On Linux or macOS (with e.g. [homebrew]), it's also possible to run `dnsmasq` on
+   the host. Simply comment the `dnsmasq` section in `docker-compose.yml`,
+   install the `dnsmasq` package on your host, and use a config like:
+
+```
+listen-address=127.0.0.1
+address=/docker/127.0.0.1
+server=8.8.8.8
+```
+
+ [homebrew]: http://brew.sh/
 
 ## Configuring projects
 
@@ -44,14 +67,3 @@ services:
     environment:
       - VIRTUAL_HOST=whoami.docker
 ```
-
-## Notes
-
-Builds on [jwilder/nginx-proxy] and [andyshinn/dnsmasq]. See the
-`docker-compose.yml` file, and adjust to your needs.
-
-Notably, the default DNS settings use Google DNS as the forward DNS server,
-which can be adjusted.
-
- [jwilder/nginx-proxy]: https://hub.docker.com/r/jwilder/nginx-proxy/
- [andyshinn/dnsmasq]: https://hub.docker.com/r/andyshinn/dnsmasq/
