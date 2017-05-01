@@ -13,7 +13,7 @@ services:
   # have the `VIRTUAL_HOST` environment variable set.
   # https://hub.docker.com/r/jwilder/nginx-proxy/
   nginx:
-    image: jwilder/nginx-proxy
+    image: jwilder/nginx-proxy:alpine
     container_name: auto-nginx
     # Publish the HTTP port on the host.
     ports:
