@@ -8,7 +8,7 @@ simultaneously and in isolation.
 
  - A bridge network called `auto` is used to collect all user-facing web
    services.
-   
+
    Containers added to this network usually have multiple interfaces, with one
    connected to the `auto` network, and others used to reach internal services.
 
@@ -17,16 +17,16 @@ simultaneously and in isolation.
 
    This container must have access to the host Docker socket, mounted as
    `/tmp/docker.sock`, in order to discover other containers.
-   
+
    The container runs an Nginx server as a reverse proxy, and will
    automatically reconfigure itself with virtual hosts according to other
    running containers that have an environment variable `VIRTUAL_HOST` set.
-   These virtual hosts should all be subdomains of the `docker` top-level
+   These virtual hosts should all be subdomains of the `test` top-level
    domain.
-   
+
    See the [jwilder/nginx-proxy] documentation for details.
 
- - A wildcard domain `*.docker` which resolves to the Docker host.
+ - A wildcard domain `*.test` which resolves to the Docker host.
 
    This ensures that the virtual hosts are reachable through the proxy.
 
@@ -48,7 +48,7 @@ To run this setup:
    separately.
 
  * See the `docker-compose.yml` file, and adjust it to your needs.
- 
+
    The section 'Customizing' below contains some tips for useful adjustments.
 
  * Create the `auto` bridge network:
@@ -82,12 +82,12 @@ To run this setup:
 
 ```
 listen-address=127.0.0.1
-address=/docker/127.0.0.1
+address=/test/127.0.0.1
 server=8.8.8.8
 ```
 
  - In general, `dnsmasq` can be replaced with any DNS server, as long as
-   there's a wildcard domain `*.docker` that resolves to localhost.
+   there's a wildcard domain `*.test` that resolves to localhost.
 
  - More advanced setups may run the Docker daemon somewhere other than
    `localhost`. If this is the case, you will need to change the `--address`
@@ -99,7 +99,7 @@ server=8.8.8.8
 
 Projects should start user-facing web services with an additional interface
 connected to the `auto` network, and with an environment variable
-`VIRTUAL_HOST` set to a hostname in the `docker` top-level domain.
+`VIRTUAL_HOST` set to a hostname in the `test` top-level domain.
 
 An example project `docker-compose.yml`:
 
@@ -117,9 +117,9 @@ services:
       - default
       - auto
     environment:
-      - VIRTUAL_HOST=whoami.docker
+      - VIRTUAL_HOST=whoami.test
 ```
 
 Save this file as `docker-composer.yml` in a new directory, then run
 `docker-compose up` in this directory. You should now be able to visit
-[whoami.docker](http://whoami.docker/).
+[whoami.test](http://whoami.test/).
