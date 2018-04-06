@@ -24,14 +24,14 @@ services:
     # Keep running through restarts.
     restart: always
 
-  # The dnsmasq instance that responds to all requests for the `docker`
+  # The dnsmasq instance that responds to all requests for the `test`
   # top-level domain with `127.0.0.1`, which is the nginx proxy.
   # https://hub.docker.com/r/andyshinn/dnsmasq/
   dnsmasq:
     image: andyshinn/dnsmasq
     container_name: auto-dnsmasq
     command:
-      - '--address=/docker/127.0.0.1'
+      - '--address=/test/127.0.0.1'
       - '--server=8.8.8.8'  # Forward to Google DNS.
     # Dnsmasq needs this capability.
     cap_add:
