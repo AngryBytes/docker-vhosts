@@ -13,7 +13,7 @@ services:
   # have the `VIRTUAL_HOST` environment variable set.
   # https://hub.docker.com/r/jwilder/nginx-proxy/
   nginx:
-    image: jwilder/nginx-proxy:alpine
+    image: jwilder/nginx-proxy:alpine@sha256:cae1c144b54b2cc26c250e943708ea3abce1bd9f328ed27c58059e6195fcf9ec
     container_name: auto-nginx
     # Publish the HTTP port on the host.
     ports:
@@ -28,7 +28,7 @@ services:
   # top-level domain with `127.0.0.1`, which is the nginx proxy.
   # https://hub.docker.com/r/andyshinn/dnsmasq/
   dnsmasq:
-    image: andyshinn/dnsmasq
+    image: andyshinn/dnsmasq@sha256:4fea93e30551a5971e8934c4b47f70d293c2774a9c7dae1edb1a663e2b2402a3
     container_name: auto-dnsmasq
     command:
       - '--address=/test/127.0.0.1'
